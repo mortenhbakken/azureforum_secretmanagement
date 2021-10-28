@@ -16,7 +16,7 @@ jobs:
     env:
       ResourceGroupName: azureforumsecretmanagement
       ResourceGroupLocation: "northeurope"
-      DOTNET_VERSION: "5"
+      DOTNET_VERSION: "5.0.x"
       AZURE_WEBAPP_PACKAGE_PATH: '/website'
       AZURE_WEBAPP_NAME: 'azureforumsecretmanagementapp'
     steps:
