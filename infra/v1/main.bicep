@@ -2,6 +2,8 @@ param location string = resourceGroup().location
 param skuCode string = 'F1'
 param sku string = 'Free'
 param websitename string
+@secure()
+param secretvalue string
 
 resource appsServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: 'websiteplan'
@@ -17,5 +19,13 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
   location: location
   properties: {
     serverFarmId: appsServicePlan.id
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'SecretValue'
+          value: secretvalue
+        }
+      ]
+    }
   }
 }
