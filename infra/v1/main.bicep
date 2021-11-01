@@ -27,7 +27,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
-  name: 'secretstore'
+  name: 'azureforumsecretstore'
   location: location
   properties: {
     sku: {
