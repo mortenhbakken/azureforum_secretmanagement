@@ -3,7 +3,7 @@ param skuCode string = 'F1'
 param sku string = 'Free'
 param websitename string
 @secure()
-param secretvalue string
+param secretValue string
 @secure()
 param websiteprincipalid string
 
@@ -39,11 +39,11 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
   }
 }
 
-resource secretValue 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' = {
+resource kv_secretValue 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' = {
   parent: keyVault
   name: 'secretValue'
   properties: {
-    value: secretvalue
+    value: secretValue
   }
 }
 
@@ -73,5 +73,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
     roleDefinitionId: secretReaderDefinition.name
     principalId: websiteprincipalid
   }
-  scope: secretValue
+  scope: kv_secretValue
 }
