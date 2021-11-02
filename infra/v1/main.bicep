@@ -7,7 +7,10 @@ param secretValue string
 @secure()
 param websiteprincipalid string
 
-var secretReaderRoleId = guid('customRole-secretReader')
+var roles = {
+  'Key Vault Secret Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+}
+var secretUserRoleAssignmentName = guid(roles['Key Vault Secret Reader'])
 
 resource appsServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: 'websiteplan'
@@ -47,31 +50,11 @@ resource kv_secretValue 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' =
   }
 }
 
-resource secretReaderDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: secretReaderRoleId
-  properties: {
-    roleName: 'Secret Reader'
-    description: 'Allows to read the secret secretValue'
-    assignableScopes: [
-      resourceGroup().id
-    ]
-    permissions: [
-      {
-        'actions': [
-          'Microsoft.Authorization/*/read'
-        ]
-        'notActions': []
-      }
-    ]
-
-  }
-}
-
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  name: 'website_secretreader'
+  scope: kv_secretValue
+  name: secretUserRoleAssignmentName
   properties: {
-    roleDefinitionId: secretReaderDefinition.name
+    roleDefinitionId: roles['Key Vault Secret Reader']
     principalId: websiteprincipalid
   }
-  scope: kv_secretValue
 }
