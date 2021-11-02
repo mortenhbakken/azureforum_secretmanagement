@@ -25,15 +25,15 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Azure Bicep Build
-        run: |
-          az bicep build --file infra/v1/main.bicep
       - name: Create Resource Group
         uses: azure/CLI@v1
         with:
           inlineScript: |
             #!/bin/bash
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
+      - name: Azure Bicep Build
+        run: |
+          az bicep build --file infra/v1/main.bicep            
       - name: deploy infrastructure
         uses: azure/arm-deploy@v1
         with:
