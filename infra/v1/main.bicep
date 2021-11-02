@@ -53,7 +53,7 @@ resource secretReaderDefinition 'Microsoft.Authorization/roleDefinitions@2018-01
     roleName: 'Secret Reader'
     description: 'Allows to read the secret secretValue'
     assignableScopes: [
-      subscription().id
+      resourceGroup().id
     ]
     permissions: [
       {
