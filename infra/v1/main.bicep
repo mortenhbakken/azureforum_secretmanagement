@@ -50,7 +50,7 @@ resource kv_secretValue 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' =
   }
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
   scope: kv_secretValue
   name: secretUserRoleAssignmentName
   properties: {
