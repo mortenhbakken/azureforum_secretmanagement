@@ -6,6 +6,12 @@ param websitename string
 param secretValue string
 @secure()
 param websiteprincipalid string
+@secure()
+param websiteclientid string
+@secure()
+param websitetenantid string
+@secure()
+param websiteclientsecret string
 
 var roles = {
   'Key Vault Secret Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
@@ -26,6 +32,22 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
   location: location
   properties: {
     serverFarmId: appsServicePlan.id
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'ClientId'
+          value: websiteclientid
+        }
+        {
+          name: 'TenantId'
+          value: websitetenantid
+        }
+        {
+          name: 'ClientSecret'
+          value: websiteclientsecret
+        }
+      ]
+    }
   }
 }
 
