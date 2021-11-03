@@ -20,6 +20,13 @@ jobs:
       AZURE_WEBAPP_PACKAGE_PATH: '.'
       AZURE_WEBAPP_NAME: 'azureforumsecretmanagementapp'
     steps:
+      - name: Clean up
+        uses: azure/CLI@v1
+        with:
+           inlineScript: |
+            az logout
+            az cache purge
+            az account clear
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Login to Azure
