@@ -24,6 +24,7 @@ jobs:
       - name: Create Resource Group
         uses: azure/CLI@v1
         with:
+          azcliversion: 2.29.2
           inlineScript: |
             #!/bin/bash
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
