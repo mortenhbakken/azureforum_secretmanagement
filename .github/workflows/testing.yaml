@@ -27,7 +27,6 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            #!/bin/bash
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
       # - name: Azure Bicep Build
       #   run: |
