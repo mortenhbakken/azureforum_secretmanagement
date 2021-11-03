@@ -10,8 +10,8 @@ jobs:
   AzureDeployment:
     runs-on: ubuntu-latest
     env:
-      ResourceGroupName: "azureforumsecretmanagement"
-      ResourceGroupLocation: "northeurope"
+      ResourceGroupName: azureforumsecretmanagement
+      ResourceGroupLocation: northeurope
       DOTNET_VERSION: "5.0.x"
       AZURE_WEBAPP_PACKAGE_PATH: '.'
       AZURE_WEBAPP_NAME: 'azureforumsecretmanagementapp'
@@ -28,6 +28,7 @@ jobs:
         with:
           inlineScript: |
             az account show
+            az cache list
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
       # - name: Azure Bicep Build
       #   run: |
