@@ -2,6 +2,7 @@ param location string = resourceGroup().location
 param skuCode string = 'F1'
 param sku string = 'Free'
 param websitename string
+param keyvaultname string
 @secure()
 param secretValue string
 @secure()
@@ -46,13 +47,17 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
           name: 'ClientSecret'
           value: websiteclientsecret
         }
+        {
+          name: 'KeyVaultName'
+          value: keyvaultname
+        }
       ]
     }
   }
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
-  name: 'azureforumsecretstore'
+  name: keyvaultname
   location: location
   properties: {
     sku: {
