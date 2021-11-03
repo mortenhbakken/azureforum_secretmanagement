@@ -16,43 +16,45 @@ jobs:
       AZURE_WEBAPP_PACKAGE_PATH: '.'
       AZURE_WEBAPP_NAME: 'azureforumsecretmanagementapp'
     steps:
-      - uses: actions/checkout@v2
+      #- uses: actions/checkout@v2
 
-      - uses: azure/login@v1
+      - name: Login to Azure
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Create Resource Group
         uses: azure/CLI@v1
         with:
           inlineScript: |
             #!/bin/bash
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
-      - name: Azure Bicep Build
-        run: |
-          az bicep build --file infra/v1/main.bicep            
-      - name: deploy infrastructure
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ env.ResourceGroupName }}
-          template: ./infra/v1/main.json
-          parameters: websitename=${{ env.AZURE_WEBAPP_NAME }} secretValue=${{ secrets.SECRET_VALUE }} websiteprincipalid=${{ secrets.WEBSITEID_PRINCIPALID }}
-          failOnStdErr: false
-      - name: setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: dotnet build and publish
-        run: |
-          cd website
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish -c Release -o ../secretapp
-      - name: publish to appservice
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/secretapp'
-      - name: logout
-        run: |
-          az logout
+      # - name: Azure Bicep Build
+      #   run: |
+      #     az bicep build --file infra/v1/main.bicep            
+      # - name: deploy infrastructure
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ env.ResourceGroupName }}
+      #     template: ./infra/v1/main.json
+      #     parameters: websitename=${{ env.AZURE_WEBAPP_NAME }} secretValue=${{ secrets.SECRET_VALUE }} websiteprincipalid=${{ secrets.WEBSITEID_PRINCIPALID }}
+      #     failOnStdErr: false
+      # - name: setup .NET Core
+      #   uses: actions/setup-dotnet@v1
+      #   with:
+      #     dotnet-version: ${{ env.DOTNET_VERSION }}
+      # - name: dotnet build and publish
+      #   run: |
+      #     cd website
+      #     dotnet restore
+      #     dotnet build --configuration Release
+      #     dotnet publish -c Release -o ../secretapp
+      # - name: publish to appservice
+      #   uses: azure/webapps-deploy@v2
+      #   with:
+      #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
+      #     package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/secretapp'
+      # - name: logout
+      #   run: |
+      #     az logout
