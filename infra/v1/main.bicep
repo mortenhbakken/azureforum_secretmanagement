@@ -10,7 +10,7 @@ param secretName string
 var roles = {
   'Key Vault Secret Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
 }
-var secretUserRoleAssignmentName = guid(roles['Key Vault Secret Reader'])
+var secretUserRoleAssignmentName = guid(roles['Key Vault Secret Reader'], 'Managed identity')
 var kv_reference = '@Microsoft.KeyVault(VaultName=${keyvaultname};SecretName=${secretName})'
 
 resource appsServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
