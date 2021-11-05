@@ -25,15 +25,8 @@ namespace azureforum_secretmanagement.Pages
 
         public void OnGet()
         {
-            var keyVaultName = _config["KeyVaultName"];
-            var kvUri = "https://" + keyVaultName + ".vault.azure.net";
-
-            var token = new ClientSecretCredential(_config["TenantId"], _config["ClientId"], _config["ClientSecret"]);
-
-            var client = new SecretClient(new Uri(kvUri), token);
-
-            var secret = client.GetSecret("SecretValue");
-            this.Secret = secret.Value.Value;
+            var secret = _config["SecretValue"];
+            this.Secret = secret;
         }
     }
 }

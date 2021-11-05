@@ -5,19 +5,13 @@ param websitename string
 param keyvaultname string
 @secure()
 param secretValue string
-@secure()
-param websiteprincipalid string
-@secure()
-param websiteclientid string
-@secure()
-param websitetenantid string
-@secure()
-param websiteclientsecret string
+param secretName string
 
 var roles = {
   'Key Vault Secret Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
 }
 var secretUserRoleAssignmentName = guid(roles['Key Vault Secret Reader'])
+var kv_reference = '@Microsoft.KeyVault(VaultName=${keyvaultname};SecretName=${secretName})'
 
 resource appsServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: 'websiteplan'
@@ -31,25 +25,16 @@ resource appsServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
 resource appService 'Microsoft.Web/sites@2021-02-01' = {
   name: websitename
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: appsServicePlan.id
     siteConfig: {
       appSettings: [
         {
-          name: 'ClientId'
-          value: websiteclientid
-        }
-        {
-          name: 'TenantId'
-          value: websitetenantid
-        }
-        {
-          name: 'ClientSecret'
-          value: websiteclientsecret
-        }
-        {
-          name: 'KeyVaultName'
-          value: keyvaultname
+          name: 'SecretValue'
+          value: kv_reference
         }
       ]
     }
@@ -71,7 +56,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
 
 resource kv_secretValue 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' = {
   parent: keyVault
-  name: 'secretValue'
+  name: secretName
   properties: {
     value: secretValue
   }
@@ -82,6 +67,6 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-08-01-prev
   name: secretUserRoleAssignmentName
   properties: {
     roleDefinitionId: roles['Key Vault Secret Reader']
-    principalId: websiteprincipalid
+    principalId: appService.identity.principalId
   }
 }
