@@ -68,5 +68,6 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-08-01-prev
   properties: {
     roleDefinitionId: roles['Key Vault Secret Reader']
     principalId: appService.identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }
