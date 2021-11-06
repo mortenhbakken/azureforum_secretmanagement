@@ -14,7 +14,7 @@ jobs:
       ResourceGroupLocation: "northeurope"
       DOTNET_VERSION: "5.0.x"
       AZURE_WEBAPP_PACKAGE_PATH: '.'
-      AZURE_WEBAPP_NAME: 'azureforumsecretmanagementapp_mi'
+      AZURE_WEBAPP_NAME: 'azureforumsecretmanagementapp-mi'
     steps:
       - uses: actions/checkout@v2
 
