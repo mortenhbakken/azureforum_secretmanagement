@@ -9,6 +9,7 @@ There are a few common prerequisites for all the scenarios:
 - An active Azure subscription
 - A Service Principal with *owner* rights in the subscription, configured as a Secret in the GitHub repository ([guide](https://github.com/marketplace/actions/azure-login#configure-a-service-principal-with-a-secret))
 - A secret value that you want to deploy into Azure. Store this as a GitHub Secret under the name *SECRET_VALUE*
+- Create a globally unique name for the Web App(s) and Key Vault(s) to be deployed. These are parameterized in the bicep file, can be overriden by hand in the GitHub Action file (.github/workflows/CIflow.yml)
 - .NET 5 SDK
 
 For the **secret_loaded_from_kv** there is one additional prerequisite:
