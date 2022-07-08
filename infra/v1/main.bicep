@@ -6,6 +6,7 @@ param keyvaultname string
 @secure()
 param secretValue string
 param secretName string
+param extra string
 
 var roles = {
   'Key Vault Secret Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
